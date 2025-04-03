@@ -2,7 +2,6 @@ import streamlit as st
 import subprocess
 import os
 import shutil
-import pathlib
 
 st.set_page_config(page_title="URL → App", layout="centered")
 
@@ -47,22 +46,17 @@ if st.button("Gerar App"):
 
             subprocess.run(command, check=True)
 
-            # PATCH do libffmpeg.dylib para macOS
+            # PATCH do libffmpeg.dylib no macOS (Render fix)
             if platform == "macOS":
-                electron_path = shutil.which("electron")
-                if electron_path:
-                    base_path = pathlib.Path(electron_path).parent.parent
-                    lib_src = base_path / "libffmpeg.dylib"
-                    lib_dst = f"{app_path}/Contents/Frameworks/Electron Framework.framework/Libraries/libffmpeg.dylib"
-                    os.makedirs(os.path.dirname(lib_dst), exist_ok=True)
+                lib_src = "/usr/local/lib/node_modules/electron/dist/libffmpeg.dylib"
+                lib_dst = f"{app_path}/Contents/Frameworks/Electron Framework.framework/Libraries/libffmpeg.dylib"
+                os.makedirs(os.path.dirname(lib_dst), exist_ok=True)
 
-                    if os.path.exists(lib_src):
-                        shutil.copy2(lib_src, lib_dst)
-                        st.success("🔧 Patch libffmpeg.dylib aplicado com sucesso.")
-                    else:
-                        st.warning(f"⚠️ libffmpeg.dylib não encontrado em {lib_src}.")
+                if os.path.exists(lib_src):
+                    shutil.copy2(lib_src, lib_dst)
+                    st.success("🔧 Patch libffmpeg.dylib aplicado com sucesso.")
                 else:
-                    st.warning("⚠️ Caminho para o Electron não encontrado. Verifique a instalação.")
+                    st.warning(f"⚠️ libffmpeg.dylib não encontrado em {lib_src}. Verifique a instalação global do Electron.")
 
             zip_path = shutil.make_archive(output_dir, 'zip', output_dir)
             with open(zip_path, "rb") as f:
