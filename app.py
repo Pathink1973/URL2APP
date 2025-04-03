@@ -47,7 +47,7 @@ if st.button("Gerar App"):
             subprocess.run(command, check=True)
 
             if platform == "macOS":
-                lib_src = "node_modules/electron/dist/libffmpeg.dylib"
+                llib_src = "/usr/local/lib/node_modules/electron/dist/libffmpeg.dylib"
                 lib_dst = f"{app_path}/Contents/Frameworks/Electron Framework.framework/Libraries/libffmpeg.dylib"
                 os.makedirs(os.path.dirname(lib_dst), exist_ok=True)
                 if os.path.exists(lib_src):
