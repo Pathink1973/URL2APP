@@ -9,11 +9,7 @@ st.title("🚀 URL → Native App Converter")
 st.write("Transforma qualquer site num app nativo para macOS ou Windows com ícone personalizado.")
 
 url = st.text_input("🔗 Cole o URL do site")
-
-# Upload do ícone
 icon = st.file_uploader("🖼️ Ícone personalizado (.png ou .ico)", type=["png", "ico"])
-
-# Plataforma
 platform = st.radio("🖥️ Sistema Operativo", ["macOS", "Windows"])
 
 if st.button("Gerar App"):
@@ -26,7 +22,6 @@ if st.button("Gerar App"):
 
         os.makedirs(output_dir, exist_ok=True)
 
-        # Salvar ícone
         icon_path = None
         if icon:
             ext = ".ico" if platform == "Windows" else ".png"
@@ -38,7 +33,6 @@ if st.button("Gerar App"):
 
         try:
             st.info("🔧 Gerando app... Aguarde.")
-            # Comando Nativefier
             command = [
                 "nativefier",
                 "--name", app_name,
@@ -52,7 +46,6 @@ if st.button("Gerar App"):
 
             subprocess.run(command, check=True)
 
-            # macOS: patch do libffmpeg
             if platform == "macOS":
                 lib_src = "node_modules/electron/dist/libffmpeg.dylib"
                 lib_dst = f"{app_path}/Contents/Frameworks/Electron Framework.framework/Libraries/libffmpeg.dylib"
@@ -63,10 +56,7 @@ if st.button("Gerar App"):
                 else:
                     st.warning("⚠️ libffmpeg.dylib não encontrado. Rode `npm install electron` no terminal.")
 
-            # Criar zip
             zip_path = shutil.make_archive(output_dir, 'zip', output_dir)
-
-            # Botão para download
             with open(zip_path, "rb") as f:
                 st.success("✅ App gerado com sucesso!")
                 st.download_button("📥 Baixar App (.zip)", f, file_name=f"{app_name}.zip")

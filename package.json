@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Converter sites em apps nativos usando Nativefier + Electron",
   "scripts": {
-    "build-mac": "nativefier --name autismus --platform mac --electron-version 25.9.0 https://autismus.app builds/autismus && cp node_modules/electron/dist/libffmpeg.dylib builds/autismus/autismus.app/Contents/Frameworks/Electron\\ Framework.framework/Libraries/libffmpeg.dylib"
+    "build-mac": "nativefier --name autismus --platform mac --electron-version 25.9.0 https://autismus.app builds/autismus && cp node_modules/electron/dist/libffmpeg.dylib builds/autismus/autismus.app/Contents/Frameworks/Electron\ Framework.framework/Libraries/libffmpeg.dylib"
   },
   "dependencies": {
-    "electron": "^25.9.8"
+    "electron": "25.9.0"
   }
 }
