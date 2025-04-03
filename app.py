@@ -46,15 +46,16 @@ if st.button("Gerar App"):
 
             subprocess.run(command, check=True)
 
+            # PATCH para libffmpeg.dylib no macOS
             if platform == "macOS":
-                llib_src = "/usr/local/lib/node_modules/electron/dist/libffmpeg.dylib"
+                lib_src = "/usr/local/lib/node_modules/electron/dist/libffmpeg.dylib"
                 lib_dst = f"{app_path}/Contents/Frameworks/Electron Framework.framework/Libraries/libffmpeg.dylib"
                 os.makedirs(os.path.dirname(lib_dst), exist_ok=True)
                 if os.path.exists(lib_src):
                     shutil.copy2(lib_src, lib_dst)
                     st.success("🔧 Patch libffmpeg.dylib aplicado com sucesso.")
                 else:
-                    st.warning("⚠️ libffmpeg.dylib não encontrado. Rode `npm install electron` no terminal.")
+                    st.warning("⚠️ libffmpeg.dylib não encontrado. Verifique a instalação do Electron.")
 
             zip_path = shutil.make_archive(output_dir, 'zip', output_dir)
             with open(zip_path, "rb") as f:
